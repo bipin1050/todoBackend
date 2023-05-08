@@ -1,16 +1,22 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 var path = require("path");
+const cookieparser = require("cookie-parser");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
+app.use(cookieparser());
 
-const db_link = "mongodb+srv://admin:qh8KBK4rQpx0sT2R@cluster0.xbwo5lv.mongodb.net/";
+const db_link =
+  "mongodb+srv://admin:qh8KBK4rQpx0sT2R@cluster0.xbwo5lv.mongodb.net/";
 mongoose
   .connect(db_link, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -21,12 +27,12 @@ mongoose
     console.log(err);
   });
 
-  
-  const userRouter = require("./routers/userRouter");
+const userRouter = require("./routers/userRouter");
+const todoRouter = require("./routers/todoRouter");
 //   const todoRouter = require("")
 
-  var htmlpath = path.join(__dirname, "public");
-  app.use(express.static(htmlpath));
+var htmlpath = path.join(__dirname, "public");
+app.use(express.static(htmlpath));
 
-  app.use('/user', userRouter);
-//   app.use("/todo", todoRouter)
+app.use("/user", userRouter);
+app.use("/todo", todoRouter)

@@ -36,19 +36,20 @@ module.exports.login = async function loginUser(req, res) {
       let user = await userModel.findOne({ username: data.username });
 
       if (user) {
-        const auth = await bcrypt.compare(data.password, user.password)
+        const auth = await bcrypt.compare(data.password, user.password);
         if (auth) {
           let uid = user["_id"];
-          let maxAge = 5*24*60*60;
+          let maxAge = 5 * 24 * 60 * 60;
           let token = jwt.sign({ payload: uid }, process.env.Secret_Key, {
             expiresIn: maxAge,
           });
-          res.cookie("login", token, { httpOnly: true });
+          res.cookie("jwt", token, {
+            httpOnly: true,
+          });
           return res.status(200).json({
-            message:
-              "User logged in succesfully",
+            message: "User logged in succesfully",
             jwt: token,
-            username: user.username
+            username: user.username,
           });
         } else {
           return res.status(400).json({
@@ -71,3 +72,32 @@ module.exports.login = async function loginUser(req, res) {
     });
   }
 };
+
+
+module.exports.verifytoken = async function (req, res){
+    try{
+        let token = req.cookies;
+        if(token){
+          let auth = jwt.verify(token.jwt, process.env.Secret_Key);
+            if(auth){
+                const user = await userModel.findById(auth.payload);
+                res.status(200).json({
+                    username : user.username
+                })
+            }
+            else{
+                res.status(400).json({
+                  message: "Token invalid",
+                });
+            }
+        }else{
+            res.status(400).json({
+                message : "No Token found"
+            })
+        }
+    }catch(err){
+        return res.status(500).json({
+            message:"bad network"
+        });
+    }
+}
