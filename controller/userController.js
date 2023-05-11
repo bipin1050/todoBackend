@@ -3,6 +3,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
+const secretKey = "theToriApp";
 
 //signup
 module.exports.signup = async function signUp(req, res) {
@@ -39,7 +40,7 @@ module.exports.login = async function loginUser(req, res) {
         if (auth) {
           let uid = user["_id"];
           let maxAge = 5 * 24 * 60 * 60;
-          let token = jwt.sign({ payload: uid }, process.env.Secret_Key, {
+          let token = jwt.sign({ payload: uid }, secretKey, {
             expiresIn: maxAge,
           });
           res.cookie("jwt", token, {
@@ -79,7 +80,7 @@ module.exports.verifytoken = async function (req, res) {
   try {
     let token = req.cookies;
     if (token) {
-      let auth = jwt.verify(token.jwt, process.env.Secret_Key);
+      let auth = jwt.verify(token.jwt, secretKey);
       if (auth) {
         const user = await userModel.findById(auth.payload);
         res.status(200).json({
