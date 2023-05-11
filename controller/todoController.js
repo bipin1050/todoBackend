@@ -7,15 +7,14 @@ const express = require("express");
 module.exports.addtodo = async function addtodo(req, res) {
   try {
     let dataObj = req.body;
-    let user = await userModel.create(dataObj);
-    if (user) {
+    let todo = await todoModel.create(dataObj);
+    if (todo) {
       return res.status(200).json({
-        message: "SignedUp signUp authController controller",
-        data: user,
+        message: "item added successfully",
       });
     } else {
       res.status(400).json({
-        message: "Error signUp authController controller",
+        message: "Error creating list",
       });
     }
   } catch (err) {
