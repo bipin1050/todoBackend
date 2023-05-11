@@ -12,6 +12,13 @@ app.use(
     credentials: true,
   })
 );
+app.use(
+  cors({
+    origin: "https://to-do-roek.onrender.com/",
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 app.use(cookieparser());
 
