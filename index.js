@@ -8,7 +8,7 @@ const cookieparser = require("cookie-parser");
 
 app.use(
   cors({
-    origin: "https://to-do-roek.onrender.com",
+    origin: "http://localhost:8000",
     credentials: true,
   })
 );
