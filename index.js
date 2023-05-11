@@ -6,7 +6,12 @@ const cors = require("cors");
 var path = require("path");
 const cookieparser = require("cookie-parser");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://to-do-roek.onrender.com",
+    credentials: true,
+  })
+);
 
 app.use(bodyParser.json());
 app.use(cookieparser());
