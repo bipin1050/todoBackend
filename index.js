@@ -8,7 +8,7 @@ const cookieparser = require("cookie-parser");
 
 app.use(
   cors({
-    origin: "http://localhost:8000",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
