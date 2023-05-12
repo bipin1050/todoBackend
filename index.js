@@ -30,10 +30,12 @@ mongoose
 
 const userRouter = require("./routers/userRouter");
 const todoRouter = require("./routers/todoRouter");
+const { protectRoute } = require("./controller/userController");
 //   const todoRouter = require("")
 
 var htmlpath = path.join(__dirname, "public");
 app.use(express.static(htmlpath));
 
 app.use("/user", userRouter);
+app.use(protectRoute);
 app.use("/todo", todoRouter);

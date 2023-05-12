@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const todoSchema = mongoose.Schema({
-  userId: {
+  username: {
     type: String,
     required: true,
   },
@@ -9,6 +9,11 @@ const todoSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  status:{
+    type: Boolean,
+    required: true,
+    default: false
+  }
 });
 
 const todoModel = mongoose.model("todoModel", todoSchema);
