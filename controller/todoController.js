@@ -28,9 +28,12 @@ module.exports.addtodo = async function addtodo(req, res) {
 
 module.exports.viewtodo = async function viewtodo(req, res) {
   try {
-    let user = req.body.username;
-    if (user) {
-      const todoList = await todoModel.find({ username: user });
+    // let user = req.body.username;
+    let token = req.cookies.jwt
+    let {payload}=jwt.verify(token,secretKey)
+    payload=await userModel.findById(payload)
+    if (payload) {
+      const todoList = await todoModel.find({ username: payload.username });
       if (todoList) {
         return res.status(200).json({
           todoList: todoList,
