@@ -76,32 +76,32 @@ module.exports.login = async function loginUser(req, res) {
   }
 };
 
-// module.exports.verifytoken = async function (req, res) {
-//   try {
-//     let token = req.cookies;
-//     if (token) {
-//       let auth = jwt.verify(token.jwt, secretKey);
-//       if (auth) {
-//         const user = await userModel.findById(auth.payload);
-//         res.status(200).json({
-//           username: user.username,
-//         });
-//       } else {
-//         res.status(400).json({
-//           message: "Token invalid",
-//         });
-//       }
-//     } else {
-//       res.status(400).json({
-//         message: "No Token found",
-//       });
-//     }
-//   } catch (err) {
-//     return res.status(500).json({
-//       message: "Failed to authorize",
-//     });
-//   }
-// };
+module.exports.verifytoken = async function (req, res) {
+  try {
+    let token = req.cookies;
+    if (token) {
+      let auth = jwt.verify(token.jwt, secretKey);
+      if (auth) {
+        const user = await userModel.findById(auth.payload);
+        res.status(200).json({
+          username: user.username,
+        });
+      } else {
+        res.status(400).json({
+          message: "Token invalid",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "No Token found",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: "Failed to authorize",
+    });
+  }
+};
 
 
 module.exports.protectRoute = async function protectRoute(req, res, next) {
